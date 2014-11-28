@@ -44,10 +44,13 @@ class FilterCtx(CtxMixin):
     def __enter__(self):
         v_attr = self.v_attr
         if isinstance(v_attr, six.string_types):
-            v_attr = int_from_digit(
-                v_attr,
-                is_strict=self.is_strict
-            )
+            try:
+                v_attr = int_from_digit(
+                    v_attr,
+                    is_strict=self.is_strict
+                )
+            except SphinxQLSyntaxException:
+                pass
         if isinstance(self.v_attr, (tuple, list)):
             v_attr = list_of_integers_only(
                 v_attr,
